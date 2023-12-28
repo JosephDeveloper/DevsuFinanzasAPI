@@ -1,0 +1,36 @@
+version: "3"
+services:
+  devsu-finanzas:
+    container_name: devsu-finanzas
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: devsu-finanzas:latest
+    ports:
+      - "8001:8001"
+    networks:
+      - spring
+    depends_on:
+      - mysql
+    restart: always
+  mysql:
+    container_name: mysql
+    image: mysql:8
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: devsuFinanzas
+    volumes:
+      - data-mysql:/var/lib/mysql
+    restart: always
+    networks:
+      - spring
+
+volumes:
+  data-mysql:
+    name: data-mysql
+networks:
+  spring:
+    name: spring
